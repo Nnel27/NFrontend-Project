@@ -19,31 +19,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+
 interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
 }
 
+
+type Role = "student" | "teacher" | "admin";
+
+
 export default function LoginPage() {
   const router = useRouter();
   const { isChecking } = useAuthGuard({ requireAuth: false });
-  const [username, setUsername] = useState("");
+  const [user_id, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<Role>("student"); // Default selected role
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   if (isChecking) return null;
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+
     try {
+      // Include the selected role in the request body if your backend expects it
       const data = await apiClient<LoginResponse>("/auth/login", {
         method: "POST",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ user_id, password, role }),
       });
+
 
       setTokens(data.accessToken, data.refreshToken);
       router.push(CONFIG.ROUTES.DASHBOARD);
@@ -54,12 +65,13 @@ export default function LoginPage() {
     }
   };
 
+
   return (
     <div className="flex min-h-screen items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account.</CardDescription>
+          <CardDescription>Select your role and enter your credentials.</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
@@ -68,12 +80,39 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
+
+
+            {/* Role Selection Buttons */}
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {(["student", "teacher", "admin"] as Role[]).map((r) => {
+
+                  let Color = "bg-primary text-primary-foreground capitalize";
+                   if (r === "student") Color = "bg-green-600 hover:bg-green-700 text-white capitalize";
+                   if (r === "teacher") Color = "bg-green-600 hover:bg-green-700 text-white capitalize";
+                   if (r === "admin") Color = "bg-green-600 hover:bg-green-700 text-white capitalize"
+
+                  return(
+                  <Button
+                    key={r}
+                    type="button"
+                    className={role === r ? Color : "bg-secondary text-secondary-foreground hover:bg-secondary/80 capitalize"}
+                    onClick={() => setRole(r)}
+                  >
+                    {r}
+                  </Button>
+                  );
+                })}
+              </div>
+            </div>
+
+
+            <div className="space-y-2">
+              <Label htmlFor="user_id">User ID or Name</Label>
               <Input
-                id="username"
+                id="user_id"
                 type="text"
-                value={username}
+                value={user_id}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
@@ -90,12 +129,10 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+            <Button type="submit" className="w-full bg-green-600 hover:bg-yellow-500 text-white" disabled={loading}>
+              {loading ? "Logging in..." : 'Login'
+              }
             </Button>
-            <p className="text-sm text-center text-muted-foreground">
-              Don't have an account? Sad{" "}
-            </p>
           </CardFooter>
         </form>
       </Card>
