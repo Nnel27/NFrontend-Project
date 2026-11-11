@@ -68,11 +68,15 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-background">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-background gap-6">
+      <div className="text-center space-y-1">
+        <h1 className="text-5xl font-bold tracking-tight"><u>School Management System</u></h1>
+      </div>
+
+      <Card className="w-full max-w-md border-4 border-green-500">
         <CardHeader>
-          <CardTitle className="text-3xl text-center font-bold">Login</CardTitle>
-          <CardDescription className="text-1x1 text-center">Select and Enter your Profile Credentials.</CardDescription>
+          <CardTitle className="text-2xl text-center font-bold">Login</CardTitle>
+          <CardDescription className="text-1x1 text-center">Select and enter your Profile Credentials.</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
@@ -139,7 +143,7 @@ export default function LoginPage() {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-4 space-y-2">
+          <CardFooter className="flex flex-col gap-4 mt-4">
             <Button type="submit" className="w-full bg-green-600 hover:bg-yellow-500 text-white" disabled={loading}>
               {loading ? "Logging in..." : `Login as ${role}`
               }
