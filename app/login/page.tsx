@@ -71,7 +71,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-3xl text-center font-bold">Login</CardTitle>
-          <CardDescription>Select and Enter your Profile Credentials.</CardDescription>
+          <CardDescription className="text-1x1 text-center">Select and Enter your Profile Credentials.</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
