@@ -34,6 +34,7 @@ export default function LoginPage() {
   const { isChecking } = useAuthGuard({ requireAuth: false });
   const [user_id, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<Role>("student"); // Default selected role
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -112,6 +113,7 @@ export default function LoginPage() {
               <Input
                 id="user_id"
                 type="text"
+                placeholder="e.g. 00-0000 / 00-00000"                
                 value={user_id}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -119,18 +121,27 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-sm font-medium focus:outline-none"
+                  > {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-4">
+          <CardFooter className="flex flex-col gap-4 space-y-2">
             <Button type="submit" className="w-full bg-green-600 hover:bg-yellow-500 text-white" disabled={loading}>
-              {loading ? "Logging in..." : 'Login'
+              {loading ? "Logging in..." : `Login as ${role}`
               }
             </Button>
           </CardFooter>
