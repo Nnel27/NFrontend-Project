@@ -70,7 +70,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-3xl text-center font-bold">Login</CardTitle>
           <CardDescription>Select and Enter your Profile Credentials.</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
